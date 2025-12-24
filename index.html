@@ -347,6 +347,52 @@ body.dark textarea{
   background: rgba(255,255,255,0.1);
   color: #fff;
 }
+/* ========== DARK MODE OVERRIDES ========== */
+
+body.dark {
+  background: #121212 !important;
+  color: #ffffff !important;
+}
+
+body.dark .screen {
+  background: rgba(30,30,30,0.95) !important;
+  color: #ffffff !important;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background: rgba(255,255,255,0.08) !important;
+  color: #ffffff !important;
+}
+
+body.dark button {
+  background: linear-gradient(135deg,#444,#222) !important;
+  color: #ffffff !important;
+}
+
+body.dark .card {
+  background: rgba(255,255,255,0.08) !important;
+}
+
+body.dark .record,
+body.dark .info-box,
+body.dark #settingsPanel,
+body.dark #notificationPanel {
+  background: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+body.dark #settingsIcon,
+body.dark #notifyIcon {
+  background: #1e1e1e !important;
+  color: #ffffff !important;
+}
+
+body.dark select option {
+  background: #1e1e1e;
+  color: #ffffff;
+}
 
 </style>
 </head>
@@ -391,7 +437,11 @@ body.dark textarea{
 <button onclick="show('medTrack')">💊😷 Medication Tracking</button>
 <button onclick="show('symptomBot')">🤒 Symptom Checker</button>
 <button onclick="show('advanced')">⚙ Advanced Services</button>
-<p class="small">Educational use only. Consult a doctor.</p>
+<p class="small">
+We’re here to help you understand your health better.  
+In any serious case, always talk with your doctor.
+</p>
+
 </div>
 
 <div class="screen" id="doctorSection">
@@ -668,40 +718,41 @@ function toggleSettings(){
 function applySettings(){
   const s = getSettings();
 
-  // checkboxes
-  setNotify.checked   = s.notifications;
-  setSound.checked    = s.sound;
-  setSOS.checked      = s.sos;
-  setLocation.checked = s.location;
-  setDarkMode.checked = s.darkMode;
+  document.getElementById("setNotify").checked   = s.notifications;
+  document.getElementById("setSound").checked    = s.sound;
+  document.getElementById("setDarkMode").checked = s.darkMode;
 
-  // select
-  setLanguage.value = s.language;
+  document.getElementById("setLanguage").value = s.language;
 
-  // dark mode
   document.body.classList.toggle("dark", s.darkMode);
 
-  // SOS visibility
-  document.getElementById("sosBtn").style.display =
-    s.sos ? "flex" : "none";
+  document.getElementById("sosBtn").style.display = "flex";
 
-  // language
   applyLanguage(s.language);
 }
 
 /* Save changes */
 function saveFromSettings(){
   const s = {
-    notifications: setNotify.checked,
-    sound: setSound.checked,
-    darkMode: setDarkMode.checked,
-    language: setLanguage.value,
+    notifications: document.getElementById("setNotify").checked,
+    sound: document.getElementById("setSound").checked,
+    darkMode: document.getElementById("setDarkMode").checked,
+    language: document.getElementById("setLanguage").value,
     locked: getSettings().locked
   };
 
   saveSettings(s);
   applySettings();
 }
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("setNotify").addEventListener("change", saveFromSettings);
+  document.getElementById("setSound").addEventListener("change", saveFromSettings);
+  document.getElementById("setDarkMode").addEventListener("change", saveFromSettings);
+  document.getElementById("setLanguage").addEventListener("change", saveFromSettings);
+
+  applySettings();
+});
+
 
 // checkboxes
 document.querySelectorAll(
@@ -1930,3 +1981,4 @@ document.addEventListener("DOMContentLoaded", renderDoctors);
 </body>
 
 </html>
+
