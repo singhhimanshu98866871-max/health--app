@@ -553,9 +553,6 @@ It does NOT diagnose diseases.
 
 <button onclick="show('healthTips')">📰 Health Tips & Articles</button>
 <button onclick="show('insurance')">🛡 Insurance & Claims</button>
-<button onclick="show('labTests')">🧪 Lab Tests</button>
-<button onclick="show('doctorRating')">⭐ Doctor Feedback</button>
-
 <button class="back" onclick="show('main')">← Back</button>
 </div>
 <div id="healthTips" class="screen">
@@ -598,50 +595,6 @@ It does NOT diagnose diseases.
 
 <button class="back" onclick="show('advanced')">← Back</button>
 </div>
-<div id="labTests" class="screen">
-<h1>🧪 Lab Tests</h1>
-
-<select id="labTest">
-  <option value="">Select Test</option>
-  <option>Blood Test</option>
-  <option>Diabetes Test</option>
-  <option>Thyroid Test</option>
-  <option>COVID-19 Test</option>
-</select>
-
-<button onclick="bookLab()">Book Test</button>
-
-<div id="labOut" class="output"></div>
-
-<button class="back" onclick="show('advanced')">← Back</button>
-</div>
-<div id="doctorRating" class="screen">
-<h1>⭐ Doctor Feedback</h1>
-
-<select id="doctorName">
-  <option>Dr. Sharma (Physician)</option>
-  <option>Dr. Mehta (Cardiologist)</option>
-  <option>Dr. Khan (Dermatologist)</option>
-</select>
-
-<select id="rating">
-  <option value="5">★★★★★ Excellent</option>
-  <option value="4">★★★★ Good</option>
-  <option value="3">★★★ Average</option>
-  <option value="2">★★ Poor</option>
-  <option value="1">★ Very Poor</option>
-</select>
-
-<textarea id="feedback" placeholder="Write your feedback"></textarea>
-
-<button onclick="submitFeedback()">Submit</button>
-
-<div id="feedbackOut" class="output"></div>
-
-<button class="back" onclick="show('advanced')">← Back</button>
-</div>
-
-
 
 
 <script>
@@ -1975,4 +1928,5 @@ document.addEventListener("DOMContentLoaded", renderDoctors);
 
 
 </body>
+
 </html>
