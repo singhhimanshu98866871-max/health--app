@@ -122,23 +122,6 @@
   display:none;
   z-index:9998;
 }
-
-/* SOS Floating Button */
-#sosBtn{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #e74c3c;
-  color: #fff;
-  font-size: 18px;
-  padding: 16px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-  z-index: 9999;
-  font-weight: bold;
-}
-
 /* ---------- GLOBAL ---------- */
 *{
   box-sizing:border-box;
@@ -685,6 +668,14 @@ function checkLock(){
   }
   return true;
 }
+async function enableNotifications(){
+  if("Notification" in window){
+    const permission = await Notification.requestPermission();
+    if(permission !== "granted"){
+      alert("Please allow notifications for reminders");
+    }
+  }
+}
 
 /* ================= SETTINGS SYSTEM ================= */
 
@@ -699,9 +690,10 @@ const defaultSettings = {
 
 
 function getSettings(){
-  return JSON.parse(localStorage.getItem("appSettings"))
-    || defaultSettings;
+  return JSON.parse(localStorage.getItem("appSettings")) 
+    || JSON.parse(JSON.stringify(defaultSettings));
 }
+
 
 function saveSettings(s){
   localStorage.setItem("appSettings", JSON.stringify(s));
@@ -937,7 +929,7 @@ function loadDiseases(){
 
   select.innerHTML = '<option value="">Select Disease</option>';
 
-  Object.keys(diseaseMedicineMap).forEach(d => {
+  Object.keys(diseaseMedicineMap).forEach(d=>{
     const option = document.createElement("option");
     option.value = d;
     option.textContent = d;
@@ -946,6 +938,7 @@ function loadDiseases(){
 }
 
 document.addEventListener("DOMContentLoaded", loadDiseases);
+
 
 const diseaseMedicineMap = {
   "Viral Fever": ["paracetamol", "ORS"],
@@ -1528,6 +1521,8 @@ const medicineDB = {
 /* AUTO LOAD ALL SYMPTOMS INTO DROPDOWN */
 function loadSymptoms(){
   const select = document.getElementById("symptomSelect");
+  if(!select) return;
+
   select.innerHTML = '<option value="">Select a symptom</option>';
 
   Object.keys(symptomDB).forEach(symptom=>{
@@ -1539,8 +1534,8 @@ function loadSymptoms(){
     select.appendChild(option);
   });
 }
-
 document.addEventListener("DOMContentLoaded", loadSymptoms);
+
 
 
 
@@ -1782,10 +1777,19 @@ const diseaseDB = {
 
 
 function medicineInfo(){
-  const m=medicineDB[medInput.value.toLowerCase()];
-  medOut.innerHTML=m?
-    `Use: ${m.use}<br>Dosage: ${m.dose}`:
-    "Medicine not found.";
+  const key = medInput.value.trim().toLowerCase();
+  const m = medicineDB[key];
+
+  if(m){
+    medOut.innerHTML = `
+      <strong>${key.toUpperCase()}</strong><br>
+      Use: ${m.use}<br>
+      Dosage: ${m.dose}<br>
+      Precautions: ${m.precautions || "—"}
+    `;
+  } else {
+    medOut.innerHTML = "Medicine not found. Please check spelling.";
+  }
 }
 
 function suggest(){
@@ -1803,6 +1807,8 @@ function saveEmergencyContact(){
     alert("Please enter a valid phone number");
     return;
   }
+
+
 
   localStorage.setItem("emergencyContact", num);
   emergencyStatus.innerHTML = `Saved Emergency Contact: ${num}`;
@@ -1981,4 +1987,5 @@ document.addEventListener("DOMContentLoaded", renderDoctors);
 </body>
 
 </html>
+
 
