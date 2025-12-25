@@ -677,6 +677,7 @@ async function enableNotifications(){
   }
 }
 
+
 /* ================= SETTINGS SYSTEM ================= */
 
 const defaultSettings = {
@@ -710,7 +711,7 @@ function toggleSettings(){
 function applySettings(){
   const s = getSettings();
 
-  document.getElementById("setNotify").checked   = s.notifications;
+  document.getElementById("setNotify") && (document.getElementById("setNotify").checked = s.notifications);
   document.getElementById("setSound").checked    = s.sound;
   document.getElementById("setDarkMode").checked = s.darkMode;
 
@@ -937,7 +938,7 @@ function loadDiseases(){
   });
 }
 
-document.addEventListener("DOMContentLoaded", loadDiseases);
+
 
 
 const diseaseMedicineMap = {
@@ -1157,11 +1158,10 @@ function checkSymptom(){
 
 /* CONNECT TO DOCTOR */
 function connectDoctor(){
-  alert(
-    "You will be redirected to book an appointment or start telemedicine consultation."
-  );
-  show('appointments'); // uses your existing appointment system
+  alert("You will be redirected to book an appointment.");
+  show('appointments');
 }
+
 
 /* REQUEST NOTIFICATION PERMISSION */
 
@@ -1534,7 +1534,7 @@ function loadSymptoms(){
     select.appendChild(option);
   });
 }
-document.addEventListener("DOMContentLoaded", loadSymptoms);
+
 
 
 
@@ -1792,14 +1792,6 @@ function medicineInfo(){
   }
 }
 
-function suggest(){
-  const d=disease.value;
-  if(!d) return suggestOut.innerHTML="Select disease";
-  const med=diseaseDB[d];
-  const m=medicineDB[med];
-  suggestOut.innerHTML=`Suggested: ${med}<br>Use: ${m.use}<br>Dosage: ${m.dose}`;
-}
-
 function saveEmergencyContact(){
   const num = emergencyNumber.value.trim();
 
@@ -1912,6 +1904,10 @@ function callDoctor(phone){
 }
 
 document.addEventListener("DOMContentLoaded", renderDoctors);
+document.addEventListener("DOMContentLoaded", () => {
+  loadSymptoms();
+  loadDiseases();
+});
 
 </script>
 
@@ -1987,5 +1983,6 @@ document.addEventListener("DOMContentLoaded", renderDoctors);
 </body>
 
 </html>
+
 
 
